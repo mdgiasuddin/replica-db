@@ -9,7 +9,7 @@ import java.util.Map;
 public class DynamicRoutingDataSource extends AbstractRoutingDataSource {
     private static final ThreadLocal<Type> currentDataSource = ThreadLocal.withInitial(() -> Type.PRIMARY);
 
-    DynamicRoutingDataSource(DataSource primaryDataSource, DataSource readOnlyDataSource) {
+    public DynamicRoutingDataSource(DataSource primaryDataSource, DataSource readOnlyDataSource) {
         Map<Object, Object> dataSources = new HashMap<>();
         dataSources.put(Type.PRIMARY, primaryDataSource);
         dataSources.put(Type.READ_ONLY, readOnlyDataSource);
