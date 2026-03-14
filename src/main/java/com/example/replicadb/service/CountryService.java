@@ -7,8 +7,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static org.springframework.transaction.annotation.Propagation.REQUIRES_NEW;
-
 @Service
 @RequiredArgsConstructor
 public class CountryService {
