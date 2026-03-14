@@ -1,0 +1,26 @@
+server:
+  port: 8182
+spring:
+  application:
+    name: replica-db
+
+  datasource:
+    primary:
+      jdbc-url: jdbc:postgresql://localhost:5445/app_db
+      username: app_write_user
+      password: write_pass
+      driver-class-name: org.postgresql.Driver
+
+    replica:
+      jdbc-url: jdbc:postgresql://localhost:5446/app_db
+      username: app_read_user
+      password: read_pass
+      driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+    show-sql: true
+    open-in-view: false

@@ -1,0 +1,31 @@
+CREATE DATABASE app_db;
+
+\c app_db
+
+CREATE ROLE repl_user
+    WITH REPLICATION
+    LOGIN
+    PASSWORD 'repl_pass';
+
+CREATE ROLE app_write_user LOGIN PASSWORD 'write_pass';
+GRANT ALL PRIVILEGES ON DATABASE app_db TO app_write_user;
+
+\c app_db
+ALTER DATABASE app_db OWNER TO app_write_user;
+ALTER SCHEMA public OWNER TO app_write_user;
+GRANT ALL ON SCHEMA public TO app_write_user;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO app_write_user;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO app_write_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO app_write_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO app_write_user;
+GRANT USAGE ON SCHEMA public TO app_write_user;
+
+CREATE ROLE app_read_user LOGIN PASSWORD 'read_pass';
+GRANT CONNECT ON DATABASE app_db TO app_read_user;
+GRANT USAGE ON SCHEMA public TO app_read_user;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO app_read_user;
+GRANT SELECT ON ALL SEQUENCES IN SCHEMA public TO app_read_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO app_read_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON SEQUENCES TO app_read_user;
+ALTER DEFAULT PRIVILEGES FOR ROLE app_write_user IN SCHEMA public GRANT SELECT ON TABLES TO app_read_user;
+ALTER DEFAULT PRIVILEGES FOR ROLE app_write_user IN SCHEMA public GRANT SELECT ON SEQUENCES TO app_read_user;
